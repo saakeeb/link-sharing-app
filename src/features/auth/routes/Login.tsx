@@ -1,14 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { LoginForm } from '../components/LoginForm';
-import { useTranslation } from 'react-i18next';
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   return (
-    <Layout title={t('pages.login')}>
+    <Layout title="Login to Your Account">
       <LoginForm onSuccess={() => navigate('/app')} />
     </Layout>
   );

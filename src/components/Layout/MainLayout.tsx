@@ -6,26 +6,15 @@ import { useThemeStore } from '@/stores/themeStore';
 import { Clock } from '../Elements/Clock';
 import { UserNavigation } from '../LayoutComponents/UserNavigation';
 import { MobileSidebar, Sidebar } from '../LayoutComponents';
-import { useSettings } from '@/features/settings/settings/api/getSettings';
-import { useSystemConfigStore } from '@/stores/SystemConfigStore';
-import { Notifications } from '@/features/notification/components/Notifications';
 
 type MainLayoutProps = {
   children: React.ReactNode;
 };
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { data: settings } = useSettings();
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const theme = useThemeStore((state) => state.theme);
-  const setSystemConfig: any = useSystemConfigStore((state) => state.setSystemConfig);
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
-
-  useEffect(() => {
-    if (settings) {
-      setSystemConfig(settings?.[0]);
-    }
-  }, [settings]);
 
   return (
     <div className="h-screen flex overflow-hidden bg-white">
@@ -56,7 +45,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 <FaMoon onClick={toggleTheme} className="text-2xl cursor-pointer" />
               )}
               <div className="w-[1.5px] h-8 bg-[#EBEBF2]"></div>
-              <Notifications />
               <div className="w-[1.5px] h-8 bg-[#EBEBF2]"></div>
               <UserNavigation />
             </div>

@@ -69,22 +69,6 @@ export const NavLinks = ({ isSidebarOpen }: { isSidebarOpen?: boolean }) => {
         { name: t('pages.manage_users'), to: '/app/manage-users' },
       ],
     },
-    // {
-    //   name: t('navigation.sidebar.access_groups'),
-    //   to: '',
-    //   icon: FaUserLock,
-    //   subMenu: [
-    //     {
-    //       name: t('pages.add_group'),
-    //       to: `/app/manage-groups?add-group=1`,
-    //     },
-    //     { name: t('pages.manage_groups'), to: '/app/manage-groups' },
-    //     {
-    //       name: t('pages.manage_permissions'),
-    //       to: '/app/manage-permissions',
-    //     },
-    //   ],
-    // },
     {
       name: t('navigation.sidebar.company_info'),
       to: '',

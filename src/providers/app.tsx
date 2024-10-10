@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import carImg from '@/assets/png/car.png';
 import { Button, Spinner } from '@/components/Elements';
-import { Notifications } from '@/components/Notifications/Notifications';
 import { AuthLoader } from '@/lib/auth';
 import { queryClient } from '@/lib/react-query';
 import storage from '@/utils/storage';
@@ -54,7 +53,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
             {import.meta.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
-            <Notifications />
             <AuthLoader
               renderLoading={() => (
                 <div className="w-screen h-screen flex justify-center items-center">

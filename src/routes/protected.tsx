@@ -36,7 +36,7 @@ const { SystemSettings } = lazyImport(
 const { ManageMenus } = lazyImport(() => import('@/features/settings/menus'), 'ManageMenus');
 const { MyApiKeys } = lazyImport(() => import('@/features/settings/my-api-keys'), 'MyApiKeys');
 
-const App = () => {
+export const App = () => {
   return (
     <MainLayout>
       <Suspense
@@ -65,11 +65,6 @@ export const protectedRoutes = [
     path: '/app',
     element: <App />,
     children: [{ path: 'manage-users', element: <ManageUsers /> }],
-  },
-  {
-    path: '/app',
-    element: <App />,
-    children: [{ path: 'maintenance-report', element: <MaintenanceReport /> }],
   },
   {
     path: '/app',
