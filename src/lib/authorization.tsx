@@ -1,24 +1,23 @@
 import * as React from 'react';
-import { Comment } from '@/features/comments';
+
+import { Comment, User } from '@/types/api';
+
 import { useUser } from './auth';
-import { AuthUser } from '@/types';
 
 export enum ROLES {
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  OWNER = 'OWNER',
   ADMIN = 'ADMIN',
-  OPERATOR = 'OPERATOR',
+  USER = 'USER',
 }
 
 type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
-  'comment:delete': (user: AuthUser, comment: Comment) => {
-    if (user.role === 'SUPER_ADMIN') {
+  'comment:delete': (user: User, comment: Comment) => {
+    if (user.role === 'ADMIN') {
       return true;
     }
 
-    if (user.role === 'OPERATOR' && comment.authorId === user.id) {
+    if (user.role === 'USER' && comment.author?.id === user.id) {
       return true;
     }
 
@@ -35,15 +34,13 @@ export const useAuthorization = () => {
 
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
-      if (!user.data) return false;
-
-      if (allowedRoles && allowedRoles.length > 0) {
-        return allowedRoles?.includes(user.data.role as RoleTypes);
+      if (allowedRoles && allowedRoles.length > 0 && user.data) {
+        return allowedRoles?.includes(user.data.role);
       }
 
       return true;
     },
-    [user.data]
+    [user.data],
   );
 
   return { checkAccess, role: user.data.role };

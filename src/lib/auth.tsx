@@ -1,50 +1,91 @@
 import { configureAuth } from 'react-query-auth';
-import {
-  loginWithEmailAndPassword,
-  getUser,
-  registerWithEmailAndPassword,
-  UserResponse,
-  LoginCredentialsDTO,
-  RegisterCredentialsDTO,
-} from '@/features/auth';
-import storage from '@/utils/storage';
+import { Navigate, useLocation } from 'react-router-dom';
+import { z } from 'zod';
 
-async function handleUserResponse(data: UserResponse) {
-  const { access, user } = data;
-  storage.setToken(access);
-  return user;
-}
+import { AuthResponse, User } from '@/types/api';
 
-async function userFn() {
-  if (storage.getToken()) {
-    const data = await getUser();
-    return data;
-  }
-  return null;
-}
+import { api } from './api-client';
 
-async function loginFn(data: LoginCredentialsDTO) {
-  const response = await loginWithEmailAndPassword(data);
-  const user = await handleUserResponse(response);
-  return user;
-}
+// api call definitions for auth (types, schemas, requests):
+// these are not part of features as this is a module shared across features
 
-async function registerFn(data: RegisterCredentialsDTO) {
-  const response = await registerWithEmailAndPassword(data);
-  const user = await handleUserResponse(response);
-  return user;
-}
+const getUser = async (): Promise<User> => {
+  const response = await api.get('/auth/me');
 
-async function logoutFn() {
-  storage.clearToken();
-  window.location.assign(window.location.origin as unknown as string);
-}
-
-const authConfig = {
-  userFn,
-  loginFn,
-  registerFn,
-  logoutFn,
+  return response.data;
 };
 
-export const { useUser, useLogin, useLogout, useRegister, AuthLoader } = configureAuth(authConfig);
+const logout = (): Promise<void> => {
+  return api.post('/auth/logout');
+};
+
+export const loginInputSchema = z.object({
+  email: z.string().min(1, 'Required').email('Invalid email'),
+  password: z.string().min(5, 'Required'),
+});
+
+export type LoginInput = z.infer<typeof loginInputSchema>;
+const loginWithEmailAndPassword = (data: LoginInput): Promise<AuthResponse> => {
+  return api.post('/auth/login', data);
+};
+
+export const registerInputSchema = z
+  .object({
+    email: z.string().min(1, 'Required'),
+    firstName: z.string().min(1, 'Required'),
+    lastName: z.string().min(1, 'Required'),
+    password: z.string().min(1, 'Required'),
+  })
+  .and(
+    z
+      .object({
+        teamId: z.string().min(1, 'Required'),
+        teamName: z.null().default(null),
+      })
+      .or(
+        z.object({
+          teamName: z.string().min(1, 'Required'),
+          teamId: z.null().default(null),
+        }),
+      ),
+  );
+
+export type RegisterInput = z.infer<typeof registerInputSchema>;
+
+const registerWithEmailAndPassword = (
+  data: RegisterInput,
+): Promise<AuthResponse> => {
+  return api.post('/auth/register', data);
+};
+
+const authConfig = {
+  userFn: getUser,
+  loginFn: async (data: LoginInput) => {
+    const response = await loginWithEmailAndPassword(data);
+    return response.user;
+  },
+  registerFn: async (data: RegisterInput) => {
+    const response = await registerWithEmailAndPassword(data);
+    return response.user;
+  },
+  logoutFn: logout,
+};
+
+export const { useUser, useLogin, useLogout, useRegister, AuthLoader } =
+  configureAuth(authConfig);
+
+export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const user = useUser();
+  const location = useLocation();
+
+  if (!user.data) {
+    return (
+      <Navigate
+        to={`/auth/login?redirectTo=${encodeURIComponent(location.pathname)}`}
+        replace
+      />
+    );
+  }
+
+  return children;
+};
