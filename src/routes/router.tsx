@@ -94,8 +94,8 @@ export const createAppRouter = (queryClient: QueryClient) =>
         {
           path: '',
           lazy: async () => {
-            const { DashboardRoute } = await import('./routes/app/dashboard');
-            return { Component: DashboardRoute };
+            const { Links } = await import('../features/links-page');
+            return { Component: Links };
           },
         },
       ],
