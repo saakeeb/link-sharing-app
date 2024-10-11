@@ -1,4 +1,4 @@
-import { Home, PanelLeft, Folder, Users, User2 } from 'lucide-react';
+
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router-dom';
 
@@ -16,6 +16,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown';
+import { ImageIcon } from '../ui/icon';
+import { LinkIcon } from '../ui/icon/link-icon';
+import { UserIcon } from '../ui/icon/user-icon';
 import { Link } from '../ui/link';
 
 type SideNavigationItem = {
@@ -28,9 +31,7 @@ const Logo = () => {
   return (
     <Link className="flex items-center text-white" to="/">
       <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-sm font-semibold text-white">
-        Bulletproof React
-      </span>
+      <span className="text-sm font-semibold text-white">Link Sharing APP</span>
     </Link>
   );
 };
@@ -80,125 +81,49 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { checkAccess } = useAuthorization();
   const navigate = useNavigate();
   const navigation = [
-    { name: 'Dashboard', to: '.', icon: Home },
-    { name: 'Discussions', to: './discussions', icon: Folder },
-    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
-      name: 'Users',
-      to: './users',
-      icon: Users,
-    },
+    { name: 'Links', to: '.', icon: LinkIcon },
+    { name: 'Profile Details', to: './discussions', icon: UserIcon },
   ].filter(Boolean) as SideNavigationItem[];
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-black sm:flex">
-        <nav className="flex flex-col items-center gap-4 px-2 py-4">
-          <div className="flex h-16 shrink-0 items-center px-4">
-            <Logo />
-          </div>
-          {navigation.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.to}
-              end={item.name !== 'Discussions'}
-              className={({ isActive }) =>
-                cn(
-                  'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
-                  isActive && 'bg-gray-900 text-white',
-                )
-              }
-            >
-              <item.icon
-                className={cn(
-                  'text-gray-400 group-hover:text-gray-300',
-                  'mr-4 size-6 shrink-0',
-                )}
-                aria-hidden="true"
-              />
-              {item.name}
-            </NavLink>
-          ))}
-        </nav>
-      </aside>
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-60">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent sm:px-6">
+      <div className="flex flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent">
           <Progress />
-          <div>
-            <div></div>
-            <div></div>
-            <div></div>
+          <div className="flex w-full justify-between gap-4 rounded-md border bg-white px-6 py-4 shadow">
+            <div className="flex items-center justify-start gap-2">
+              <div className="rounded-sm bg-violet-700">
+                <ImageIcon name="menu" className="text-white" />
+              </div>
+              <p className="hidden text-3xl font-bold text-slate-950 md:block">
+                devlinks
+              </p>
+            </div>
+            <nav className="flex items-center justify-between gap-2">
+              {navigation.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.to}
+                  className="flex items-center justify-start gap-2 rounded-md bg-white px-4 py-2 text-black hover:bg-violet-200 hover:text-violet-700 active:text-violet-700"
+                >
+                  <item.icon className="icon-hover" />
+                  <p className="hidden text-xl md:block">{item.name}</p>
+                </NavLink>
+              ))}
+            </nav>
+            {/* </div> */}
+            <div className="rounded-md  border border-violet-700 px-4 py-2 text-violet-700">
+              <p className="hidden text-xl  md:block">Preview</p>
+              <ImageIcon name="view" className="block md:hidden" />
+            </div>
           </div>
-
-          <Drawer>
-            <DrawerTrigger asChild>
-              <Button size="icon" variant="outline" className="sm:hidden">
-                <PanelLeft className="size-5" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent
-              side="left"
-              className="bg-black pt-10 text-white sm:max-w-60"
-            >
-              <nav className="grid gap-6 text-lg font-medium">
-                <div className="flex h-16 shrink-0 items-center px-4">
-                  <Logo />
-                </div>
-                {navigation.map((item) => (
-                  <NavLink
-                    key={item.name}
-                    to={item.to}
-                    end
-                    className={({ isActive }) =>
-                      cn(
-                        'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
-                        isActive && 'bg-gray-900 text-white',
-                      )
-                    }
-                  >
-                    <item.icon
-                      className={cn(
-                        'text-gray-400 group-hover:text-gray-300',
-                        'mr-4 size-6 shrink-0',
-                      )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </NavLink>
-                ))}
-              </nav>
-            </DrawerContent>
-          </Drawer>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                {/* <span className="sr-only">Open user menu</span> */}
-                <User2 className="size-6 rounded-full" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => navigate('./profile')}
-                className={cn('block px-4 py-2 text-sm text-gray-700')}
-              >
-                Your Profile
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
+        </header>
+        {/* <DropdownMenuItem
                 className={cn('block px-4 py-2 text-sm text-gray-700 w-full')}
                 onClick={() => logout.mutate({})}
               >
                 Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
+              </DropdownMenuItem> */}
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           {children}
         </main>
