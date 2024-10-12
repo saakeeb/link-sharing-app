@@ -6,18 +6,20 @@ Prerequisites:
 
 - Node 20+
 - Yarn 1.22+
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5bee2034-3e37-4492-b310-a12519deb6c2/deploy-status)](https://app.netlify.com/sites/links-sharing-app/deploys)
+
+- [![Netlify Status](https://api.netlify.com/api/v1/badges/5bee2034-3e37-4492-b310-a12519deb6c2/deploy-status)](https://app.netlify.com/sites/links-sharing-app/deploys)
+
 To set up the app execute the following commands.
 
 ```bash
-git clone https://github.com/alan2207/bulletproof-react.git
-cd bulletproof-react
-cd apps/react-vite
-cp .env.example .env
-yarn install
+clone_by: git clone https://github.com/alan2207/bulletproof-react.git
+redirect_folder: cd link-sharing-app
+copy_all_file: .env.example
+paste_all_in_root_folder: .env.local
+install_package: yarn install
 ```
 
-##### `yarn dev`
+##### `yarn run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
