@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Image } from 'lucide-react';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useNotifications } from '@/components/ui/notifications';
@@ -30,7 +30,6 @@ export const ProfileInfo: React.FC = memo(() => {
   });
 
   useEffect(() => {
-    // Set default values when userInfo changes
     reset({
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
@@ -38,49 +37,50 @@ export const ProfileInfo: React.FC = memo(() => {
     });
   }, [userInfo, reset]);
 
-  const onSubmit = (data: ProfileData) => {
-    if (data.profileImage) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        updateUserInfo({
-          profile: base64String,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-        });
-      };
-      reader.readAsDataURL(data.profileImage);
-    } else {
+  const onSubmit = useCallback(
+    (data: ProfileData) => {
       updateUserInfo({
         profile: userInfo.profile,
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
       });
-    }
-    addNotification({
-      type: 'success',
-      title: 'Updated',
-      message: 'User Data Updated',
-    });
-  };
+      addNotification({
+        type: 'success',
+        title: 'Updated',
+        message: 'User Data Updated',
+      });
+    },
+    [updateUserInfo, addNotification, userInfo.profile],
+  );
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setValue('profileImage', file); // Save the file to the form state
-    }
-  };
+  const handleImageUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          updateUserInfo({
+            ...userInfo,
+            profile: base64String,
+          });
+          setValue('profileImage', file);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [setValue, updateUserInfo, userInfo],
+  );
 
   return (
     <WhiteBG>
       <div>
-        <p className="mb-3 mt-5 text-3xl font-bold">Profile Details</p>
+        <h1 className="mb-3 mt-5 text-3xl font-bold">Profile Details</h1>
         <p className="mb-10 text-xs text-slate-500">
           Add your details to create a personal touch to your profile
         </p>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="mb-4 bg-[#fafafa] p-4">
             <div className="mb-4">
               <div className="flex w-full flex-col items-start justify-start gap-4 md:flex-row md:items-center">
@@ -98,6 +98,7 @@ export const ProfileInfo: React.FC = memo(() => {
                           src={userInfo.profile}
                           alt={`Profile of ${userInfo.firstName}`}
                           className="size-40 rounded-full"
+                          loading="lazy"
                         />
                       </div>
                     ) : (
@@ -144,7 +145,6 @@ export const ProfileInfo: React.FC = memo(() => {
                   type="text"
                   id="firstName"
                   {...register('firstName')}
-                  defaultValue={userInfo.firstName}
                   className={`block w-full rounded-md border px-3 py-2 focus:outline-none md:w-4/6 ${
                     errors.firstName
                       ? 'border-red-500 focus:border-red-500'
@@ -173,7 +173,6 @@ export const ProfileInfo: React.FC = memo(() => {
                   type="text"
                   id="lastName"
                   {...register('lastName')}
-                  defaultValue={userInfo.lastName}
                   className={`block w-full rounded-md border px-3 py-2 focus:outline-none md:w-4/6 ${
                     errors.lastName
                       ? 'border-red-500 focus:border-red-500'
@@ -202,7 +201,6 @@ export const ProfileInfo: React.FC = memo(() => {
                   type="email"
                   id="email"
                   {...register('email')}
-                  defaultValue={userInfo.email}
                   className={`block w-full rounded-md border px-3 py-2 focus:outline-none md:w-4/6 ${
                     errors.email
                       ? 'border-red-500 focus:border-red-500'

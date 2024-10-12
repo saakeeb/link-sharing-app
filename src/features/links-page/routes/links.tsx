@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 
 import { ContentLayout } from '@/components/layouts';
 import { WhiteBG } from '@/components/ui/white-bg/white-bg';
@@ -11,19 +11,26 @@ import { LinkCreate } from '../components/link-create';
 
 export const Links = memo(() => {
   const user = useUser();
+  const existingProfile = useUserInfo((state) => state.userInfo);
   const updateUserInfo = useUserInfo((state) => state.updateUserInfo);
 
-  useEffect(() => {
-    if (user?.data && user) {
-      const userInfo = {
-        profile: '',
-        firstName: user?.data.firstName,
-        lastName: user?.data.lastName,
-        email: user?.data.email,
+  const userInfo = useMemo(() => {
+    if (user?.data) {
+      return {
+        ...existingProfile,
+        firstName: user.data.firstName,
+        lastName: user.data.lastName,
+        email: user.data.email,
       };
+    }
+    return null;
+  }, [user, existingProfile]);
+
+  useEffect(() => {
+    if (userInfo) {
       updateUserInfo(userInfo);
     }
-  }, [user, updateUserInfo]);
+  }, [updateUserInfo]);
 
   return (
     <ContentLayout title="Customize Your Links">
@@ -47,4 +54,5 @@ export const Links = memo(() => {
     </ContentLayout>
   );
 });
+
 Links.displayName = 'Links';

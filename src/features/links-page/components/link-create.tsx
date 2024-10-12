@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { nanoid } from 'nanoid';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useCallback } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -73,47 +73,60 @@ export const LinkCreate = memo(() => {
     }
   }, [selectedSocialLink, setValue]);
 
-  const onSubmit = (data: FormData) => {
-    const dataWithIds = data.links.map((link) => {
-      const selectedPlatform = urlLinks.find(
-        (option) => option.label === link.platform,
-      );
-      return {
-        ...link,
-        id: link.id || nanoid(),
-        color: selectedPlatform ? selectedPlatform.color : 'bg-[#ccc]',
-      };
-    });
-    addNotification({
-      type: 'success',
-      title: 'Added',
-      message: 'Link has been added',
-    });
-    updateSocialLinks(dataWithIds);
-    reset();
-    setSelectedSocialLink({});
-  };
-
-  const handleRemoveLink = (id: number, field: any) => {
-    if (selectedSocialLink) {
-      removeSocialLink(selectedSocialLink);
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      const dataWithIds = data.links.map((link) => {
+        const selectedPlatform = urlLinks.find(
+          (option) => option.label === link.platform,
+        );
+        return {
+          ...link,
+          id: link.id || nanoid(),
+          color: selectedPlatform ? selectedPlatform.color : 'bg-[#ccc]',
+        };
+      });
       addNotification({
         type: 'success',
-        title: 'Remove',
-        message: 'Link has been deleted',
+        title: 'Added',
+        message: 'Link has been added',
       });
-      setSelectedSocialLink({});
+      updateSocialLinks(dataWithIds);
       reset();
-    }
-    if (Array.isArray(field.links) && field.links.length > 1) {
-      remove(id);
-    }
-  };
+      setSelectedSocialLink({});
+    },
+    [addNotification, reset, setSelectedSocialLink, updateSocialLinks],
+  );
+
+  const handleRemoveLink = useCallback(
+    (id: number, field: any) => {
+      if (selectedSocialLink) {
+        removeSocialLink(selectedSocialLink);
+        addNotification({
+          type: 'success',
+          title: 'Remove',
+          message: 'Link has been deleted',
+        });
+        setSelectedSocialLink({});
+        reset();
+      }
+      if (Array.isArray(field.links) && field.links.length > 1) {
+        remove(id);
+      }
+    },
+    [
+      addNotification,
+      remove,
+      removeSocialLink,
+      reset,
+      selectedSocialLink,
+      setSelectedSocialLink,
+    ],
+  );
 
   return (
     <WhiteBG>
-      <div className=" ">
-        <p className="mb-3 mt-5 text-3xl font-bold">Customize Your Links</p>
+      <div>
+        <h1 className="mb-3 mt-5 text-3xl font-bold">Customize Your Links</h1>
         <p className="mb-10 text-xs text-slate-500">
           Add/edit/remove links below and then share all your profile with the
           world!

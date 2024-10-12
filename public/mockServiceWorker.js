@@ -277,7 +277,7 @@ async function respondWithMock(response) {
 
   Reflect.defineProperty(mockedResponse, IS_MOCKED_RESPONSE, {
     value: true,
-    enumerable: false,
+    enumerable: true,
   })
 
   return mockedResponse

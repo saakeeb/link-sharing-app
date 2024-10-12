@@ -12,6 +12,7 @@ Welcome to the Link Sharing App! This application allows you to easily save and 
 - **State Management**: Utilize Zustand, a lightweight alternative to Redux, for global state management.
 - **Styling**: Tailwind CSS for modern and responsive design.
 - **Type Safety**: TypeScript for robust and error-free code.
+- **Responsive**: This is production ready mobile first responsive design.
 
 ## Prerequisites
 
@@ -42,6 +43,10 @@ Welcome to the Link Sharing App! This application allows you to easily save and 
    yarn run dev
    ```
    Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
+
+5. **Run the Production Server**:
+
+   Open [links-sharing-app](https://links-sharing-app.netlify.app) to view the app in your browser.
 
 ## Important Packages
 
