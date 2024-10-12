@@ -5,7 +5,8 @@ export const linkSchema = z.object({
     z.object({
       platform: z.string().min(1, 'Platform is required'),
       url: z.string().min(1, 'url is required'),
-      id: z.string().min(1, 'url is required'),
+      id: z.string(),
+      color: z.string().optional(),
     }),
   ),
 });

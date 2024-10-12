@@ -1,38 +1,14 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useNavigate, useNavigation } from 'react-router-dom';
+import { NavLink, useNavigation } from 'react-router-dom';
 
-import logo from '@/assets/logo.svg';
-import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
-import { useLogout } from '@/lib/auth';
-import { ROLES, useAuthorization } from '@/lib/authorization';
-import { cn } from '@/utils/cn';
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../ui/dropdown';
 import { ImageIcon } from '../ui/icon';
 import { LinkIcon } from '../ui/icon/link-icon';
 import { UserIcon } from '../ui/icon/user-icon';
-import { Link } from '../ui/link';
 
 type SideNavigationItem = {
   name: string;
   to: string;
   icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
-};
-
-const Logo = () => {
-  return (
-    <Link className="flex items-center text-white" to="/">
-      <img className="h-8 w-auto" src={logo} alt="Workflow" />
-      <span className="text-sm font-semibold text-white">Link Sharing APP</span>
-    </Link>
-  );
 };
 
 const Progress = () => {
@@ -76,12 +52,9 @@ const Progress = () => {
 };
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const logout = useLogout();
-  const { checkAccess } = useAuthorization();
-  const navigate = useNavigate();
   const navigation = [
     { name: 'Links', to: '.', icon: LinkIcon },
-    { name: 'Profile Details', to: './discussions', icon: UserIcon },
+    { name: 'Profile Details', to: './profile', icon: UserIcon },
   ].filter(Boolean) as SideNavigationItem[];
 
   return (
@@ -98,19 +71,25 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 devlinks
               </p>
             </div>
-            <nav className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-2">
               {navigation.map((item) => (
                 <NavLink
                   key={item.name}
                   to={item.to}
-                  className="flex items-center justify-start gap-2 rounded-md bg-white px-4 py-2 text-black hover:bg-violet-200 hover:text-violet-700 active:text-violet-700"
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center justify-start gap-2 rounded-md px-4 py-2  hover:bg-violet-200 hover:text-violet-700 ${
+                      isActive
+                        ? 'bg-violet-200 text-violet-700'
+                        : 'bg-white text-black'
+                    }`
+                  }
                 >
                   <item.icon className="icon-hover" />
                   <p className="hidden text-xl md:block">{item.name}</p>
                 </NavLink>
               ))}
-            </nav>
-            {/* </div> */}
+            </div>
             <div className="rounded-md  border border-violet-700 px-4 py-2 text-violet-700">
               <p className="hidden text-xl  md:block">Preview</p>
               <ImageIcon name="view" className="block md:hidden" />

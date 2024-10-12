@@ -206,10 +206,10 @@ export const LinkCreate = memo(() => {
             </div>
           ))}
 
-          <div className="mb-8 flex justify-center sm:justify-end">
+          <div className="mb-8 flex justify-end">
             <button
               type="submit"
-              className="w-full rounded-lg bg-violet-700 px-8 py-2 font-bold text-white md:w-1/5"
+              className="rounded-lg bg-violet-700 px-8 py-2 font-bold text-white"
             >
               Save
             </button>
