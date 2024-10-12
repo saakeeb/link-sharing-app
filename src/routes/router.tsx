@@ -1,10 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import {
-  LoaderFunctionArgs,
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { ProtectedRoute } from '@/lib/auth';
 
@@ -108,6 +104,15 @@ export const createAppRouter = (queryClient: QueryClient) =>
               '../features/profile-page/routes/profile-update'
             );
             return { Component: ProfileUpdate };
+          },
+        },
+        {
+          path: 'preview',
+          lazy: async () => {
+            const { PreviewLinks } = await import(
+              '../features/preview-page/routes/preview-links'
+            );
+            return { Component: PreviewLinks };
           },
         },
       ],

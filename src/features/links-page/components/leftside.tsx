@@ -1,6 +1,7 @@
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { Link, MoveRight } from 'lucide-react';
 import React, { memo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { SocialLinksProps, useLinksShare } from '@/stores/links-store';
 import { useUserInfo } from '@/stores/user-store';
@@ -10,6 +11,8 @@ export const LinkView = memo(() => {
   const updateSocialLinksOrder = useLinksShare(
     (state) => state.updateSocialLinksOrder,
   );
+  const navigate = useNavigate();
+  const location = useLocation();
   const setSelectedSocialLink = useLinksShare(
     (state) => state.setSelectedSocialLink,
   );
@@ -29,21 +32,32 @@ export const LinkView = memo(() => {
   };
 
   const handleEditLinks = (link: SocialLinksProps) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
     setSelectedSocialLink(link);
   };
 
   return (
     <div className="flex items-center justify-center">
-      <div className="relative h-[70vh] w-72 rounded-3xl border-2 border-gray-800 bg-white p-1 shadow-lg">
-        <div className="relative h-[68.6vh] w-[276px] rounded-3xl border-2 border-gray-800 bg-white shadow-lg">
-          <div className="absolute -top-[5px] left-1/2 z-10 flex h-6 w-[140px] -translate-x-1/2 items-center justify-around rounded-2xl border-2 border-black border-t-white bg-white">
-            <div className="size-2 rounded-full bg-black"></div>
-            <div className="h-2 w-20 rounded-lg bg-slate-600"></div>
-          </div>
+      <div
+        className={`w-72 rounded-3xl bg-white p-1 shadow-lg ${location.pathname !== '/preview' ? 'relative h-[600px]  border-2 border-gray-800 ' : ''}`}
+      >
+        <div
+          className={`${location.pathname !== '/preview' ? 'relative h-[588px] w-[276px] rounded-3xl border-2 border-gray-800 bg-white shadow-2xl' : ''}`}
+        >
+          {location.pathname !== '/preview' ? (
+            <div className="absolute -top-[5px] left-1/2 z-10 flex h-6 w-[140px] -translate-x-1/2 items-center justify-around rounded-2xl border-2 border-black border-t-white bg-white">
+              <div className="size-2 rounded-full bg-black"></div>
+              <div className="h-2 w-20 rounded-lg bg-slate-600"></div>
+            </div>
+          ) : (
+            ''
+          )}
           <div className="mt-10 flex flex-col items-center justify-center gap-4">
             <div>
               {userInfo.profile ? (
-                <div className="size-24 rounded-full border-2 border-violet-700">
+                <div className="size-24 rounded-full border-2 border-[#633BFE]">
                   <img
                     src={userInfo.profile}
                     alt={`Link Share by ${userInfo.firstName}`}
@@ -67,7 +81,7 @@ export const LinkView = memo(() => {
               <div className="h-4 w-20 rounded-lg bg-slate-200"></div>
             )}
           </div>
-          <div className="mt-10 h-96 overflow-hidden">
+          <div className="mt-10 h-80 overflow-hidden">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="links">
                 {(provided) => (
@@ -75,6 +89,7 @@ export const LinkView = memo(() => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className="flex h-full flex-col items-center justify-between gap-4 overflow-y-auto p-4"
+                    aria-label="Social Links List"
                   >
                     {socialLinks.map(
                       (link: SocialLinksProps, index: number) => (
@@ -90,19 +105,21 @@ export const LinkView = memo(() => {
                               {...provided.dragHandleProps}
                               className={`flex w-full items-center justify-between rounded-lg py-3 text-left text-white shadow transition  
                       ${snapshot.isDragging ? 'opacity-75' : ''}
-                      ${link?.color ? link.color : 'bg-violet-700'}
+                      ${link?.color ? link.color : 'bg-[#633BFE]'}
                     `}
+                              aria-label={`Link to ${link.platform}`}
                             >
                               <div className="flex justify-start gap-2 pl-2">
-                                <Link size={20} />
-                                {link.platform}
+                                <Link size={20} aria-hidden="true" />
+                                <span>{link.platform}</span>
                               </div>
                               <button
                                 title="Edit Link"
                                 className="pr-2"
                                 onClick={() => handleEditLinks(link)}
+                                aria-label={`Edit ${link.platform} link`}
                               >
-                                <MoveRight />
+                                <MoveRight aria-hidden="true" />
                               </button>
                             </li>
                           )}
