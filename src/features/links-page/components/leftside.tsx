@@ -39,7 +39,7 @@ export const LinkView = memo(() => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center my-10">
       <div
         className={`w-72 rounded-3xl bg-white p-1 shadow-lg ${location.pathname !== '/preview' ? 'relative h-[600px]  border-2 border-gray-800 ' : ''}`}
       >

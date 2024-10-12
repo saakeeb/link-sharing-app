@@ -102,6 +102,7 @@ export const LinkCreate = memo(() => {
         title: 'Remove',
         message: 'Link has been deleted',
       });
+      setSelectedSocialLink({});
       reset();
     }
     if (Array.isArray(field.links) && field.links.length > 1) {
