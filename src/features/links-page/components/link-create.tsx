@@ -5,6 +5,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import DropDownSelect from '@/components/ui/dropdown-box/dropdown-box';
+import { useNotifications } from '@/components/ui/notifications';
 import { WhiteBG } from '@/components/ui/white-bg/white-bg';
 import { useLinksShare } from '@/stores/links-store';
 
@@ -51,7 +52,13 @@ export const LinkCreate = memo(() => {
   const setSelectedSocialLink = useLinksShare(
     (state) => state.setSelectedSocialLink,
   );
+  const addNotification = useNotifications((state) => state.addNotification);
   const removeSocialLink = useLinksShare((state) => state.removeSocialLink);
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'links',
+  });
 
   useEffect(() => {
     if (selectedSocialLink) {
@@ -66,11 +73,6 @@ export const LinkCreate = memo(() => {
     }
   }, [selectedSocialLink, setValue]);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'links',
-  });
-
   const onSubmit = (data: FormData) => {
     const dataWithIds = data.links.map((link) => {
       const selectedPlatform = urlLinks.find(
@@ -82,7 +84,11 @@ export const LinkCreate = memo(() => {
         color: selectedPlatform ? selectedPlatform.color : 'bg-[#ccc]',
       };
     });
-
+    addNotification({
+      type: 'success',
+      title: 'Added',
+      message: 'Link has been added',
+    });
     updateSocialLinks(dataWithIds);
     reset();
     setSelectedSocialLink({});
@@ -91,6 +97,11 @@ export const LinkCreate = memo(() => {
   const handleRemoveLink = (id: number, field: any) => {
     if (selectedSocialLink) {
       removeSocialLink(selectedSocialLink);
+      addNotification({
+        type: 'success',
+        title: 'Remove',
+        message: 'Link has been deleted',
+      });
       reset();
     }
     if (Array.isArray(field.links) && field.links.length > 1) {
@@ -209,7 +220,7 @@ export const LinkCreate = memo(() => {
           <div className="mb-8 flex justify-center sm:justify-end">
             <button
               type="submit"
-              className="w-full rounded-lg bg-violet-700 px-8 py-2 font-bold text-white md:w-1/5"
+              className="w-full rounded-lg bg-[#633BFE] px-8 py-2 font-bold text-white md:w-1/5"
             >
               Save
             </button>

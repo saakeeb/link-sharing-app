@@ -1,13 +1,30 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 
 import { ContentLayout } from '@/components/layouts';
 import { WhiteBG } from '@/components/ui/white-bg/white-bg';
+import { useUser } from '@/lib/auth';
 import { Authorization, ROLES } from '@/lib/authorization';
+import { useUserInfo } from '@/stores/user-store';
 
 import { LinkView } from '../components/leftside';
 import { LinkCreate } from '../components/link-create';
 
 export const Links = memo(() => {
+  const user = useUser();
+  const updateUserInfo = useUserInfo((state) => state.updateUserInfo);
+
+  useEffect(() => {
+    if (user?.data && user) {
+      const userInfo = {
+        profile: '',
+        firstName: user?.data.firstName,
+        lastName: user?.data.lastName,
+        email: user?.data.email,
+      };
+      updateUserInfo(userInfo);
+    }
+  }, [user, updateUserInfo]);
+
   return (
     <ContentLayout title="Customize Your Links">
       <div className="w-full">

@@ -1,14 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Image, Link } from 'lucide-react';
-import React, { memo } from 'react';
+import { Image } from 'lucide-react';
+import React, { memo, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useNotifications } from '@/components/ui/notifications';
 import { WhiteBG } from '@/components/ui/white-bg/white-bg';
 import { useUserInfo } from '@/stores/user-store';
 
 import { ProfileData, ProfileSchema } from '../types';
 
 export const ProfileInfo: React.FC = memo(() => {
+  const userInfo = useUserInfo((state) => state.userInfo);
+  const updateUserInfo = useUserInfo((state) => state.updateUserInfo);
+  const addNotification = useNotifications((state) => state.addNotification);
+
   const {
     register,
     handleSubmit,
@@ -17,10 +22,21 @@ export const ProfileInfo: React.FC = memo(() => {
     reset,
   } = useForm<ProfileData>({
     resolver: zodResolver(ProfileSchema),
+    defaultValues: {
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: userInfo.email,
+    },
   });
 
-  const updateUserInfo = useUserInfo((state) => state.updateUserInfo);
-  const userInfo = useUserInfo((state) => state.userInfo);
+  useEffect(() => {
+    // Set default values when userInfo changes
+    reset({
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: userInfo.email,
+    });
+  }, [userInfo, reset]);
 
   const onSubmit = (data: ProfileData) => {
     if (data.profileImage) {
@@ -33,18 +49,21 @@ export const ProfileInfo: React.FC = memo(() => {
           lastName: data.lastName,
           email: data.email,
         });
-        // reset();
       };
       reader.readAsDataURL(data.profileImage);
     } else {
       updateUserInfo({
-        profile: null,
+        profile: userInfo.profile,
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
       });
-      //   reset();
     }
+    addNotification({
+      type: 'success',
+      title: 'Updated',
+      message: 'User Data Updated',
+    });
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +75,7 @@ export const ProfileInfo: React.FC = memo(() => {
 
   return (
     <WhiteBG>
-      <div className="">
+      <div>
         <p className="mb-3 mt-5 text-3xl font-bold">Profile Details</p>
         <p className="mb-10 text-xs text-slate-500">
           Add your details to create a personal touch to your profile
@@ -74,10 +93,10 @@ export const ProfileInfo: React.FC = memo(() => {
                 <div className="flex w-full flex-col items-start justify-start gap-4 md:w-4/6 md:flex-row md:items-center">
                   <div className="relative hover:opacity-60">
                     {userInfo.profile ? (
-                      <div className="size-40 rounded-full border-2 border-violet-700">
+                      <div className="size-40 rounded-full border-2 border-[#633BFE]">
                         <img
                           src={userInfo.profile}
-                          alt={`Link Share by ${userInfo.firstName}`}
+                          alt={`Profile of ${userInfo.firstName}`}
                           className="size-40 rounded-full"
                         />
                       </div>
@@ -89,6 +108,7 @@ export const ProfileInfo: React.FC = memo(() => {
                       accept=".jpg,.jpeg,.png,.bmp"
                       onChange={handleImageUpload}
                       className="absolute left-0 top-0 z-30 size-40 cursor-pointer opacity-0"
+                      aria-label="Upload profile picture"
                     />
                     <div className="absolute left-1/2 top-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2 opacity-80">
                       <div className="flex w-full flex-col items-center justify-center gap-2">
@@ -100,7 +120,7 @@ export const ProfileInfo: React.FC = memo(() => {
                     </div>
                   </div>
                   <p className="text-xs text-slate-500">
-                    Image must below 1024 * 1024. Use JPG, PNG, BMP format.
+                    Image must be below 1024 * 1024. Use JPG, PNG, BMP format.
                   </p>
                 </div>
               </div>
@@ -122,16 +142,20 @@ export const ProfileInfo: React.FC = memo(() => {
                 </label>
                 <input
                   type="text"
+                  id="firstName"
                   {...register('firstName')}
+                  defaultValue={userInfo.firstName}
                   className={`block w-full rounded-md border px-3 py-2 focus:outline-none md:w-4/6 ${
                     errors.firstName
                       ? 'border-red-500 focus:border-red-500'
                       : 'border-gray-300 focus:border-purple-500'
                   }`}
+                  aria-invalid={errors.firstName ? 'true' : 'false'}
+                  aria-describedby="firstNameError"
                 />
               </div>
               {errors.firstName && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="firstNameError" className="mt-1 text-sm text-red-600">
                   {errors.firstName.message}
                 </p>
               )}
@@ -147,16 +171,20 @@ export const ProfileInfo: React.FC = memo(() => {
                 </label>
                 <input
                   type="text"
+                  id="lastName"
                   {...register('lastName')}
+                  defaultValue={userInfo.lastName}
                   className={`block w-full rounded-md border px-3 py-2 focus:outline-none md:w-4/6 ${
                     errors.lastName
                       ? 'border-red-500 focus:border-red-500'
                       : 'border-gray-300 focus:border-purple-500'
                   }`}
+                  aria-invalid={errors.lastName ? 'true' : 'false'}
+                  aria-describedby="lastNameError"
                 />
               </div>
               {errors.lastName && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="lastNameError" className="mt-1 text-sm text-red-600">
                   {errors.lastName.message}
                 </p>
               )}
@@ -172,16 +200,20 @@ export const ProfileInfo: React.FC = memo(() => {
                 </label>
                 <input
                   type="email"
+                  id="email"
                   {...register('email')}
+                  defaultValue={userInfo.email}
                   className={`block w-full rounded-md border px-3 py-2 focus:outline-none md:w-4/6 ${
                     errors.email
                       ? 'border-red-500 focus:border-red-500'
                       : 'border-gray-300 focus:border-purple-500'
                   }`}
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  aria-describedby="emailError"
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="emailError" className="mt-1 text-sm text-red-600">
                   {errors.email.message}
                 </p>
               )}
@@ -190,7 +222,8 @@ export const ProfileInfo: React.FC = memo(() => {
           <div className="mb-8 flex justify-center sm:justify-end">
             <button
               type="submit"
-              className="w-full rounded-lg bg-violet-700 px-8 py-2 font-bold text-white md:w-1/5"
+              className="w-full rounded-lg bg-[#633BFE] px-8 py-2 font-bold text-white md:w-1/5"
+              aria-label="Save profile information"
             >
               Save
             </button>
