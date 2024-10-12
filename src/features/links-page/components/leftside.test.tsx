@@ -30,13 +30,13 @@ describe('LinkView Component', () => {
   };
 
   beforeEach(() => {
-    (useLinksShare as jest.Mock).mockReturnValue({
+    (useLinksShare as any).mockReturnValue({
       socialLinks: mockSocialLinks,
       updateSocialLinksOrder: vi.fn(),
       setSelectedSocialLink: vi.fn(),
     });
 
-    (useUserInfo as jest.Mock).mockReturnValue({
+    (useUserInfo as any).mockReturnValue({
       userInfo: mockUserInfo,
     });
   });

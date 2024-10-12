@@ -77,4 +77,4 @@ The app is continuously deployed on Netlify. Check the deployment status [here](
 
 ## Conclusion
 
-A powerful and easy-to-use tool for organizing and sharing your social networking links is this link sharing app. It offers users a smooth experience with its tech stack and user-friendly features. Have fun modifying and exploring your links!
+A powerful and easy-to-use tool for organizing and sharing your social networking links in this link sharing app. It offers users a smooth experience with its tech stack and user-friendly features. Have fun modifying and exploring your links!

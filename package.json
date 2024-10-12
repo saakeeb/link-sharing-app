@@ -29,6 +29,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@tanstack/react-query": "^5.32.0",
     "@tanstack/react-query-devtools": "^5.32.0",
+    "@testing-library/dom": "^10.4.0",
     "@types/react-beautiful-dnd": "^13.1.8",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
@@ -66,8 +67,8 @@
     "@storybook/react": "^8.0.9",
     "@storybook/react-vite": "^8.0.9",
     "@tailwindcss/typography": "^0.5.13",
-    "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^15.0.5",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/cors": "^2.8.17",
     "@types/dompurify": "^3.0.5",
@@ -113,7 +114,7 @@
     "vite": "^5.2.10",
     "vite-node": "^1.6.0",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.5.2"
+    "vitest": "^2.1.2"
   },
   "msw": {
     "workerDirectory": "public"
