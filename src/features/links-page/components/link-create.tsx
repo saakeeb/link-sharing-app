@@ -166,7 +166,7 @@ export const LinkCreate = memo(() => {
                   htmlFor={`links.${index}.platform`}
                   className="block text-xs text-slate-600"
                 >
-                  Platform
+                  Platform *
                 </label>
                 <Controller
                   name={`links.${index}.platform`}
@@ -205,7 +205,7 @@ export const LinkCreate = memo(() => {
                   htmlFor={`links.${index}.url`}
                   className="block text-xs text-slate-600"
                 >
-                  URL
+                  URL *
                 </label>
                 <Controller
                   control={control}

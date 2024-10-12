@@ -93,16 +93,16 @@ export const ProfileInfo: React.FC = memo(() => {
                 <div className="flex w-full flex-col items-start justify-start gap-4 md:w-4/6 md:flex-row md:items-center">
                   <div className="relative hover:opacity-60">
                     {userInfo.profile ? (
-                      <div className="size-40 rounded-full border-2 border-[#633BFE]">
+                      <div className="size-40 rounded-xl border-2 border-[#633BFE]">
                         <img
                           src={userInfo.profile}
                           alt={`Profile of ${userInfo.firstName}`}
-                          className="size-40 rounded-full"
+                          className="size-40 rounded-xl"
                           loading="lazy"
                         />
                       </div>
                     ) : (
-                      <div className="size-40 rounded-full border-2 border-slate-200 bg-slate-200"></div>
+                      <div className="size-40 rounded-xl border-2 border-slate-200 bg-slate-200"></div>
                     )}
                     <input
                       type="file"
@@ -139,7 +139,7 @@ export const ProfileInfo: React.FC = memo(() => {
                   className="mb-1 block w-full font-medium text-gray-700 md:w-2/6"
                   htmlFor="firstName"
                 >
-                  First name
+                  First name *
                 </label>
                 <input
                   type="text"
@@ -167,7 +167,7 @@ export const ProfileInfo: React.FC = memo(() => {
                   className="mb-1 block w-full font-medium text-gray-700 md:w-2/6"
                   htmlFor="lastName"
                 >
-                  Last name
+                  Last name *
                 </label>
                 <input
                   type="text"
@@ -195,7 +195,7 @@ export const ProfileInfo: React.FC = memo(() => {
                   className="mb-1 block w-full font-medium text-gray-700 md:w-2/6"
                   htmlFor="email"
                 >
-                  Email
+                  Email *
                 </label>
                 <input
                   type="email"
