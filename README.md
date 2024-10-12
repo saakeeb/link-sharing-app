@@ -6,7 +6,7 @@ Prerequisites:
 
 - Node 20+
 - Yarn 1.22+
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5bee2034-3e37-4492-b310-a12519deb6c2/deploy-status)](https://app.netlify.com/sites/links-sharing-app/deploys)
 To set up the app execute the following commands.
 
 ```bash
