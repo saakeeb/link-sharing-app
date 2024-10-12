@@ -1,32 +1,62 @@
-# React Vite Application
+# Link Sharing App
 
-## Get Started
+Welcome to the Link Sharing App! This application allows you to easily save and share your favorite social media platform names and URLs. You can perform CRUD operations, utilize drag-and-drop features, and update user details like name, email, and image. The app uses third-party bulletproof authentication for secure login and registration.
 
-Prerequisites:
+## Features
 
-- Node 20+
+- **CRUD Operations**: Create, read, update, and delete your social media links.
+- **Drag and Drop**: Easily reorder your links with a simple drag-and-drop interface.
+- **User Management**: Update user details such as name, email, and profile image.
+- **Authentication**: Secure login and registration using bulletproof authentication.
+- **Storybook**: Test and visualize dynamic components before using them in the app.
+- **State Management**: Utilize Zustand, a lightweight alternative to Redux, for global state management.
+- **Styling**: Tailwind CSS for modern and responsive design.
+- **Type Safety**: TypeScript for robust and error-free code.
+
+## Prerequisites
+
+- Node.js 20+
 - Yarn 1.22+
 
-- [![Netlify Status](https://api.netlify.com/api/v1/badges/5bee2034-3e37-4492-b310-a12519deb6c2/deploy-status)](https://app.netlify.com/sites/links-sharing-app/deploys)
+## Setup Instructions
 
-To set up the app execute the following commands.
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/saakeeb/link-sharing-app.git
+   cd link-sharing-app
+   ```
 
-```bash
-clone_by: git clone https://github.com/alan2207/bulletproof-react.git
-redirect_folder: cd link-sharing-app
-copy_all_file: .env.example
-paste_all_in_root_folder: .env.local
-install_package: yarn install
-```
+2. **Environment Setup**:
+   Create a .env.local file to the root directory then copy the example environment file and paste it :
+   ```bash
+   copy .env.example paste in .env.local
+   ```
 
-##### `yarn run dev`
+3. **Install Dependencies**:
+   ```bash
+   yarn install
+   ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+4. **Run the Development Server**:
+   ```bash
+   yarn run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
 
-##### `yarn build`
+## Important Packages
 
-Builds the app for production to the `dist` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **@tanstack/react-query**: For data fetching and caching.
+- **react-hook-form**: Simplifies form handling.
+- **zustand**: Lightweight state management.
+- **tailwindcss**: Utility-first CSS framework.
+- **typescript**: Adds static typing to JavaScript.
+- **vite**: Fast and modern build tool.
+- **storybook**: UI component explorer for React.
 
-See the section about [deployment](https://vitejs.dev/guide/static-deploy) for more information.
+## Deployment
+
+The app is continuously deployed on Netlify. Check the deployment status [here](https://app.netlify.com/sites/links-sharing-app/deploys).
+
+## Conclusion
+
+This Link Sharing App is a robust and user-friendly tool for managing and sharing your social media links. With its modern tech stack and intuitive features, it provides a seamless experience for users. Enjoy exploring and customizing your links!
