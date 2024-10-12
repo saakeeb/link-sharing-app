@@ -15,3 +15,10 @@ export const Default: Story = {
     variant: 'default',
   },
 };
+
+export const ViolateBorder: Story = {
+  args: {
+    children: 'Button',
+    variant: 'violate_border',
+  },
+};
