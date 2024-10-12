@@ -44,7 +44,19 @@ Welcome to the Link Sharing App! This application allows you to easily save and 
    ```
    Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
 
-5. **Run the Production Server**:
+5. **Run the Storybook Server**:
+   ```bash
+   yarn run storybook
+   ```
+   Open [http://localhost:6006](http://localhost:6006) to view the app in your browser.
+
+6. **Run the Vitest Test**:
+   ```bash
+   yarn run test
+   ```
+   Open [http://localhost:6006](http://localhost:6006) to view the app in your browser.
+
+7. **Run the Production Server**:
 
    Open [links-sharing-app](https://links-sharing-app.netlify.app) to view the app in your browser.
 
@@ -57,6 +69,7 @@ Welcome to the Link Sharing App! This application allows you to easily save and 
 - **typescript**: Adds static typing to JavaScript.
 - **vite**: Fast and modern build tool.
 - **storybook**: UI component explorer for React.
+- **Zod**: Schema for form validation.
 
 ## Deployment
 
@@ -64,4 +77,4 @@ The app is continuously deployed on Netlify. Check the deployment status [here](
 
 ## Conclusion
 
-This Link Sharing App is a robust and user-friendly tool for managing and sharing your social media links. With its modern tech stack and intuitive features, it provides a seamless experience for users. Enjoy exploring and customizing your links!
+A powerful and easy-to-use tool for organizing and sharing your social networking links is this link sharing app. It offers users a smooth experience with its tech stack and user-friendly features. Have fun modifying and exploring your links!

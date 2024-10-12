@@ -1,8 +1,9 @@
+import { LogOut } from 'lucide-react';
 import React, { memo, useEffect, useMemo } from 'react';
 
 import { ContentLayout } from '@/components/layouts';
 import { WhiteBG } from '@/components/ui/white-bg/white-bg';
-import { useUser } from '@/lib/auth';
+import { useLogout, useUser } from '@/lib/auth';
 import { Authorization, ROLES } from '@/lib/authorization';
 import { useUserInfo } from '@/stores/user-store';
 
@@ -13,14 +14,19 @@ export const Links = memo(() => {
   const user = useUser();
   const existingProfile = useUserInfo((state) => state.userInfo);
   const updateUserInfo = useUserInfo((state) => state.updateUserInfo);
+  const logout = useLogout();
 
   const userInfo = useMemo(() => {
     if (user?.data) {
       return {
         ...existingProfile,
-        firstName: user.data.firstName,
-        lastName: user.data.lastName,
-        email: user.data.email,
+        firstName: existingProfile.firstName
+          ? existingProfile.firstName
+          : user.data.firstName,
+        lastName: existingProfile.lastName
+          ? existingProfile.lastName
+          : user.data.lastName,
+        email: existingProfile.email ? existingProfile.email : user.data.email,
       };
     }
     return null;
@@ -43,6 +49,9 @@ export const Links = memo(() => {
             <div className="hidden size-full w-2/5 lg:block">
               <WhiteBG>
                 <LinkView />
+                <button onClick={() => logout.mutate({})}>
+                  <LogOut />
+                </button>
               </WhiteBG>
             </div>
             <div className="size-full lg:w-3/5">
