@@ -14,6 +14,9 @@ Welcome to the Link Sharing App! This application allows you to easily save and 
 - **Type Safety**: TypeScript for robust and error-free code.
 - **Responsive**: This is production ready mobile first responsive design.
 
+## Performance
+![link_sharing_app](https://github.com/user-attachments/assets/b951213a-73bb-493a-8bc1-8b18de31f5d4)
+
 ## Prerequisites
 
 - Node.js 20+
