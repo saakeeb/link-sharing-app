@@ -9,16 +9,17 @@ import {
 import { ProtectedRoute } from '@/lib/auth';
 
 import { AppRoot } from './routes/app/root';
+// import { ProfileUpdate } from '@/features/profile-page';
 
 export const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
-    {
-      path: '/',
-      lazy: async () => {
-        const { LandingRoute } = await import('./routes/landing');
-        return { Component: LandingRoute };
-      },
-    },
+    // {
+    //   path: '/',
+    //   lazy: async () => {
+    //     const { LandingRoute } = await import('./routes/landing');
+    //     return { Component: LandingRoute };
+    //   },
+    // },
     {
       path: '/auth/register',
       lazy: async () => {
@@ -34,44 +35,44 @@ export const createAppRouter = (queryClient: QueryClient) =>
       },
     },
     {
-      path: '/app',
+      path: '/',
       element: (
         <ProtectedRoute>
           <AppRoot />
         </ProtectedRoute>
       ),
       children: [
-        {
-          path: 'discussions',
-          lazy: async () => {
-            const { DiscussionsRoute } = await import(
-              './routes/app/discussions/discussions'
-            );
-            return { Component: DiscussionsRoute };
-          },
-          loader: async (args: LoaderFunctionArgs) => {
-            const { discussionsLoader } = await import(
-              './routes/app/discussions/discussions'
-            );
-            return discussionsLoader(queryClient)(args);
-          },
-        },
-        {
-          path: 'discussions/:discussionId',
-          lazy: async () => {
-            const { DiscussionRoute } = await import(
-              './routes/app/discussions/discussion'
-            );
-            return { Component: DiscussionRoute };
-          },
+        // {
+        //   path: 'discussions',
+        //   lazy: async () => {
+        //     const { DiscussionsRoute } = await import(
+        //       './routes/app/discussions/discussions'
+        //     );
+        //     return { Component: DiscussionsRoute };
+        //   },
+        //   loader: async (args: LoaderFunctionArgs) => {
+        //     const { discussionsLoader } = await import(
+        //       './routes/app/discussions/discussions'
+        //     );
+        //     return discussionsLoader(queryClient)(args);
+        //   },
+        // },
+        // {
+        //   path: 'discussions/:discussionId',
+        //   lazy: async () => {
+        //     const { DiscussionRoute } = await import(
+        //       './routes/app/discussions/discussion'
+        //     );
+        //     return { Component: DiscussionRoute };
+        //   },
 
-          loader: async (args: LoaderFunctionArgs) => {
-            const { discussionLoader } = await import(
-              './routes/app/discussions/discussion'
-            );
-            return discussionLoader(queryClient)(args);
-          },
-        },
+        //   loader: async (args: LoaderFunctionArgs) => {
+        //     const { discussionLoader } = await import(
+        //       './routes/app/discussions/discussion'
+        //     );
+        //     return discussionLoader(queryClient)(args);
+        //   },
+        // },
         {
           path: 'users',
           lazy: async () => {
@@ -84,18 +85,29 @@ export const createAppRouter = (queryClient: QueryClient) =>
             return usersLoader(queryClient)();
           },
         },
-        {
-          path: 'profile',
-          lazy: async () => {
-            const { ProfileRoute } = await import('./routes/app/profile');
-            return { Component: ProfileRoute };
-          },
-        },
+        // {
+        //   path: 'profile',
+        //   lazy: async () => {
+        //     const { ProfileRoute } = await import('./routes/app/profile');
+        //     return { Component: ProfileRoute };
+        //   },
+        // },
         {
           path: '',
           lazy: async () => {
-            const { Links } = await import('../features/links-page');
+            const { Links } = await import(
+              '../features/links-page/routes/links'
+            );
             return { Component: Links };
+          },
+        },
+        {
+          path: 'profile',
+          lazy: async () => {
+            const { ProfileUpdate } = await import(
+              '../features/profile-page/routes/profile-update'
+            );
+            return { Component: ProfileUpdate };
           },
         },
       ],

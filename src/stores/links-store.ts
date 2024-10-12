@@ -5,6 +5,7 @@ export type SocialLinksProps = {
   platform?: string;
   url?: string;
   id?: string;
+  color?: string;
 };
 
 export type LinksShareProps = {
@@ -13,6 +14,7 @@ export type LinksShareProps = {
   updateSocialLinksOrder: (newOrder: SocialLinksProps[]) => void;
   selectedSocialLink: SocialLinksProps | null;
   setSelectedSocialLink: (link: SocialLinksProps) => void;
+  removeSocialLink: (link: SocialLinksProps) => void;
 };
 
 export const useLinksShare = create<LinksShareProps>()(
@@ -22,6 +24,7 @@ export const useLinksShare = create<LinksShareProps>()(
         socialLinks: [],
         updateSocialLinks: (newData) =>
           set((state) => {
+            console.log('newData: ', newData);
             const updatedLinks = state.socialLinks.map((link) => {
               const newLink = newData.find((newLink) => newLink.id === link.id);
               return newLink ? { ...link, ...newLink } : link;
@@ -37,8 +40,14 @@ export const useLinksShare = create<LinksShareProps>()(
             };
           }),
         updateSocialLinksOrder: (newData) => set({ socialLinks: newData }),
-        selectedSocialLink: null,
+        selectedSocialLink: {},
         setSelectedSocialLink: (link) => set({ selectedSocialLink: link }),
+        removeSocialLink: (newData) =>
+          set((state) => ({
+            socialLinks: state.socialLinks.filter(
+              (link) => link.id !== newData.id,
+            ),
+          })),
       }),
       { name: 'SocialLinks' },
     ),
