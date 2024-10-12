@@ -87,18 +87,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* .icon-hover:hover {
-  filter: invert(1);
-} */
-
-/* Add this CSS to your stylesheet */
-/* .icon-hover:hover,
-.icon-hover:active {
-  filter: invert(0.5) sepia(1) saturate(5) hue-rotate(200deg);
-} */
-
-.icon-hover:hover,
-.icon-hover:active {
-  color: #7c3aed; /* For text or elements that use the color property */
-  fill: #7c3aed;  /* For SVG elements */
+ul {
+  list-style: none;
 }

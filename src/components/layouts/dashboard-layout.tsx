@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useNavigation } from 'react-router-dom';
 
@@ -87,10 +86,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <div className="flex flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+      <div className="flex w-full flex-col gap-4 p-4 sm:gap-6 sm:p-6">
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background sm:static sm:h-auto sm:justify-end sm:border-0 sm:bg-transparent">
           <Progress />
-          <div className="flex w-full justify-between gap-4 rounded-md border bg-white px-6 py-4 shadow">
+          <div className="mx-auto flex w-full max-w-[1440px]  justify-between gap-4 rounded-md border bg-white px-6 py-4 shadow">
             <div className="flex items-center justify-start gap-2">
               <div className="rounded-sm bg-violet-700">
                 <ImageIcon name="menu" className="text-white" />
@@ -124,7 +123,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               >
                 Sign Out
               </DropdownMenuItem> */}
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8">
           {children}
         </main>
       </div>

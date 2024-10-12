@@ -40,7 +40,7 @@ const DemoDrawer = () => {
         <Button variant="outline">Open</Button>
       </DrawerTrigger>
       <DrawerContent className="flex max-w-[800px] flex-col justify-between sm:max-w-[540px]">
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col">
           <DrawerHeader>
             <DrawerTitle>Drawer Header</DrawerTitle>
             <DrawerDescription>
